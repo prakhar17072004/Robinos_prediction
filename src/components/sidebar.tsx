@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import React from 'react'
 
 
@@ -6,9 +7,9 @@ function sidebar() {
     return (
         <div className='w-[280px] h-[100vh]  pl-[20px] space-y-[px] bg-[#061230] text-white'>
             <div className='h-[110px]'>
-                {/* <a href=''>
-                    <img src="../assets/robinos_islogo.svg" alt="Robinos logo" loading="lazy" width="150" height="100" decoding="async" data-nimg="1" className="w-auto h-auto" />
-                </a> */}
+                <a href=''>
+                    <Image src={`../assets/robinos_islogo.svg`} alt="Robinos logo" loading="lazy" width="150" height="100" decoding="async" data-nimg="1" className="w-auto h-auto" />
+                </a>
             </div>
             <ul className='text-slate-500 text-[18px] font-medium'>
                 <li className='mb-[40px] '>

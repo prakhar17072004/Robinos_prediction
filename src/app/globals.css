@@ -12,3 +12,6 @@
 .img{
   background-image: url('../assets/robinos_islogo.svg');
 }
+.gradient{
+  background: linear-gradient(90deg,#00ffcf,#5d5dff 35% ,#fd85d5 70%);
+}

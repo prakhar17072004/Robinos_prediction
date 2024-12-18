@@ -9,3 +9,6 @@
   background-position-y: 0%;
   background-size: auto 150%;
 }
+.img{
+  background-image: url('../assets/robinos_islogo.svg');
+}

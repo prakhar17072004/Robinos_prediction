@@ -136,8 +136,8 @@ const Main: React.FC = () => {
         </svg>
       </button>
       {isTokensDropdownOpen && (
-        <ul className="absolute top-[70px] z-10 bg-slate-800 text-white rounded-[10px] w-full p-2 shadow-md">
-          {["Token 1", "Token 2", "Token 3"].map((token) => (
+        <ul className="absolute top-[70px] z-10 bg-slate-800 text-white rounded-[10px] w-[180px] p-2 shadow-md">
+          {["All Tokens", "RBN"].map((token) => (
             <li
               key={token}
               className="p-2 hover:bg-slate-700 rounded cursor-pointer"
@@ -173,8 +173,8 @@ const Main: React.FC = () => {
         </svg>
       </button>
       {isSportsDropdownOpen && (
-        <ul className="absolute top-[70px] z-10 bg-slate-800 text-white rounded-[10px] w-full p-2 shadow-md">
-          {["Sport 1", "Sport 2", "Sport 3"].map((sport) => (
+        <ul className="absolute top-[70px] left-[195px] z-10 bg-slate-800 text-white rounded-[10px] w-[180px] p-2 shadow-md">
+          {["All Sports", "Football", "Crypto","Other","F1"].map((sport) => (
             <li
               key={sport}
               className="p-2 hover:bg-slate-700 rounded cursor-pointer"

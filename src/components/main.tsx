@@ -2,9 +2,31 @@ import React, { useState } from "react";
 
 const Main: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("ongoing");
+  const [isTokensDropdownOpen, setTokensDropdownOpen] = useState<boolean>(false);
+  const [isSportsDropdownOpen, setSportsDropdownOpen] = useState<boolean>(false);
+  const [selectedToken, setSelectedToken] = useState<string>("All Tokens");
+  const [selectedSport, setSelectedSport] = useState<string>("All Sports");
 
   const handleTabClick = (tab: string): void => {
     setActiveTab(tab);
+  };
+  const toggleTokensDropdown = (): void => {
+    setTokensDropdownOpen((prev) => !prev);
+    if (isSportsDropdownOpen) setSportsDropdownOpen(false); // Close other dropdown
+  };
+
+  const toggleSportsDropdown = (): void => {
+    setSportsDropdownOpen((prev) => !prev);
+    if (isTokensDropdownOpen) setTokensDropdownOpen(false); // Close other dropdown
+  };
+  const handleTokenSelect = (token: string): void => {
+    setSelectedToken(token);
+    setTokensDropdownOpen(false); // Close dropdown after selection
+  };
+
+  const handleSportSelect = (sport: string): void => {
+    setSelectedSport(sport);
+    setSportsDropdownOpen(false); // Close dropdown after selection
   };
 
   return (
@@ -89,62 +111,81 @@ const Main: React.FC = () => {
                 placeholder="Search"
               />
             </div>
-            <div className="flex flex-col md:flex-row lg:grow gap-[10px]">
-              <button
-                type="button"
-                role="combobox"
-                aria-controls="radix-:R1l9tf6la:"
-                aria-expanded="false"
-                aria-autocomplete="none"
-                dir="ltr"
-                data-state="closed"
-                className="flex h-[60px] items-center justify-between rounded-[10px] border border-slate-700 placeholder:text-white text-white disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 px-[10px] xl:px-[20px] w-full"
-              >
-                <span>All Tokens</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-chevron-down h-4 w-4 opacity-50 "
-                  aria-hidden="true"
-                >
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </button>
-              <button
-                type="button"
-                role="combobox"
-                aria-controls="radix-:R2l9tf6la:"
-                aria-expanded="false"
-                aria-autocomplete="none"
-                dir="ltr"
-                data-state="closed"
-                className="flex h-[60px] items-center justify-between rounded-[10px] border border-slate-700 placeholder:text-white text-white disabled:cursor-not-allowed disabled:opacity-50 [&amp;>span]:line-clamp-1 px-[10px] xl:px-[20px] w-full"
-              >
-                <span>All Sports</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-chevron-down h-4 w-4 opacity-50"
-                  aria-hidden="true"
-                >
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </button>
-            </div>
+            <div className="flex flex-col md:flex-row lg:grow gap-[10px] relative">
+      {/* All Tokens Dropdown */}
+      <button
+        type="button"
+        onClick={toggleTokensDropdown}
+        className="flex h-[60px] items-center justify-between rounded-[10px] border border-slate-700 text-white px-[10px] xl:px-[20px] w-full"
+      >
+        <span>{selectedToken}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-4 w-4 opacity-50"
+          aria-hidden="true"
+        >
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
+      </button>
+      {isTokensDropdownOpen && (
+        <ul className="absolute top-[70px] z-10 bg-slate-800 text-white rounded-[10px] w-full p-2 shadow-md">
+          {["Token 1", "Token 2", "Token 3"].map((token) => (
+            <li
+              key={token}
+              className="p-2 hover:bg-slate-700 rounded cursor-pointer"
+              onClick={() => handleTokenSelect(token)}
+            >
+              {token}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* All Sports Dropdown */}
+      <button
+        type="button"
+        onClick={toggleSportsDropdown}
+        className="flex h-[60px] items-center justify-between rounded-[10px] border border-slate-700 text-white px-[10px] xl:px-[20px] w-full"
+      >
+        <span>{selectedSport}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-4 w-4 opacity-50"
+          aria-hidden="true"
+        >
+          <path d="m6 9 6 6 6-6"></path>
+        </svg>
+      </button>
+      {isSportsDropdownOpen && (
+        <ul className="absolute top-[70px] z-10 bg-slate-800 text-white rounded-[10px] w-full p-2 shadow-md">
+          {["Sport 1", "Sport 2", "Sport 3"].map((sport) => (
+            <li
+              key={sport}
+              className="p-2 hover:bg-slate-700 rounded cursor-pointer"
+              onClick={() => handleSportSelect(sport)}
+            >
+              {sport}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
           </div>
         </div>
       </div>

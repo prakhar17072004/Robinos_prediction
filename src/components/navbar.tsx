@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import metamaskLogo from "../assets/metamask.png";
 import coinbase from "../assets/coinbase.png";
+import rainbow from "../assets/rainbow.png";
 import Image from "next/image";
 
 function Navbar() {
@@ -19,19 +20,18 @@ function Navbar() {
   const networks = ["Telos", "Taiko", "Mantle"];
   const wallets = [
     { name: "MetaMask", logo: metamaskLogo, installUrl: "https://metamask.io/" },
-    { name: "Rainbow", logo: metamaskLogo, installUrl: "https://rainbow.me/" },
+    { name: "Rainbow", logo: rainbow, installUrl: "https://rainbow.me/" },
     { name: "Coinbase", logo: coinbase, installUrl: "https://www.coinbase.com" },
-    { name: "WalletConnect", logo: metamaskLogo, installUrl: "https://walletconnect.com/" },
+    // { name: "WalletConnect", logo: metamaskLogo, installUrl: "https://walletconnect.com/" },
   ];
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const detectWallets = () => {
         setInstalledWallets({
-          MetaMask: !!window.ethereum, // Detect MetaMask
-          Rainbow: false, // Add detection logic if Rainbow Wallet supports a window object
-          Coinbase: false, // Add detection logic if Coinbase Wallet has support
-          WalletConnect: false, // WalletConnect detection usually relies on deep linking or a bridge
+          MetaMask: !!window.ethereum && !!window.ethereum.isMetaMask, // Detect MetaMask
+          Rainbow: !!window.ethereum && !!window.ethereum.isRainbow, // Detect Rainbow
+          Coinbase: !!window.ethereum && !!window.ethereum.isCoinbaseWallet, // Detect Coinbase
         });
       };
 
@@ -40,27 +40,58 @@ function Navbar() {
   }, []);
 
   const handleWalletSelection = (walletName: string): void => {
-    if (walletName === "MetaMask" && installedWallets.MetaMask) {
-      window.ethereum
-        ?.request({ method: "eth_requestAccounts" })
-        .then((accounts: string[]) => {
-          console.log("Connected to MetaMask:", accounts[0]);
-        })
-        .catch((error: any) => {
-          console.error("Error connecting to MetaMask:", error);
-        });
-    } else if (walletName === "Coinbase" && installedWallets.Coinbase) {
-      // Coinbase Wallet connection logic
-      console.log("Open Coinbase Wallet Interface");
-    } else if (walletName === "WalletConnect" && installedWallets.WalletConnect) {
-      // WalletConnect logic
-      console.log("Open WalletConnect Interface");
+    const wallet = wallets.find((w) => w.name === walletName);
+
+    if (!wallet) return;
+
+    if (installedWallets[walletName]) {
+      switch (walletName) {
+        case "MetaMask":
+          if (window.ethereum && window.ethereum.isMetaMask) {
+            window.ethereum
+              ?.request({ method: "eth_requestAccounts" })
+              .then((accounts: string[]) => {
+                console.log("Connected to MetaMask:", accounts[0]);
+              })
+              .catch((error: any) => {
+                console.error("Error connecting to MetaMask:", error);
+              });
+          }
+          break;
+
+        case "Rainbow":
+          if (window.ethereum && window.ethereum.isRainbow) {
+            window.ethereum
+              .request({ method: "eth_requestAccounts" })
+              .then((accounts: string[]) => {
+                console.log("Connected to Rainbow:", accounts[0]);
+              })
+              .catch((error: any) => {
+                console.error("Error connecting to Rainbow:", error);
+              });
+          }
+          break;
+
+        case "Coinbase":
+          if (window.ethereum && window.ethereum.isCoinbaseWallet) {
+            window.ethereum
+              .request({ method: "eth_requestAccounts" })
+              .then((accounts: string[]) => {
+                console.log("Connected to Coinbase Wallet:", accounts[0]);
+              })
+              .catch((error: any) => {
+                console.error("Error connecting to Coinbase Wallet:", error);
+              });
+          }
+          break;
+
+        default:
+          console.error("Wallet connection logic not implemented.");
+          break;
+      }
     } else {
       console.log(`${walletName} is not installed. Redirecting to installation.`);
-      const wallet = wallets.find((w) => w.name === walletName);
-      if (wallet) {
-        window.open(wallet.installUrl, "_blank");
-      }
+      window.open(wallet.installUrl, "_blank");
     }
   };
 

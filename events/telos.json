@@ -1,0 +1,28 @@
+[
+    {
+      "eventCode": "Prediction - $TLOS price on Dec 22",
+      "betLink": {
+        "linkURL": "",
+        "linkText": ""
+      },
+      "saleActive": false,
+      "category": "Crypto",
+      "condition": [
+        "Snapshot taken on Dec 22 2024 23:59 UTC",
+        "If price is $0.35, over wins"
+      ],
+      "teamA": {
+        "name": "$0.35 & Over",
+        "img": "https://raw.githubusercontent.com/swapsicledex/robinos-images/master/sports/Boolean/telos_up.png",
+        "loser": false
+      },
+      "teamB": {
+        "name": "Under $0.35",
+        "img": "https://raw.githubusercontent.com/swapsicledex/robinos-images/master/sports/Boolean/telos_down.png",
+        "loser": false
+      },
+      "saleEnd": 1734739140,
+      "standardTokenAddress": "0xEECA10921a5b3dcD2acB8EF2cb4B1b4D6a69B16e",
+      "tokenName": "RBN"
+    }
+]

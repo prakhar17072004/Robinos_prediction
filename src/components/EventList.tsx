@@ -1,15 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { fetchEvents } from '../services/api';
+import { fetchEvents } from '../Services/api'; // Make sure the file path is correct
 import EventCard from './EventCard';
 
+// Define types for event data
+interface BetLink {
+  linkURL: string;
+  linkText: string;
+}
+
+interface Team {
+  name: string;
+  img: string;
+  loser: boolean;
+}
+
+interface Event {
+  eventCode: string;
+  betLink: BetLink;
+  saleActive: boolean;
+  category: string;
+  condition: string[];
+  teamA: Team;
+  teamB: Team;
+  saleEnd: number;
+  standardTokenAddress: string;
+  tokenName: string;
+}
+
 const EventList: React.FC = () => {
-  const [events, setEvents] = useState([]);
-  const [error, setError] = useState('');
+  const [events, setEvents] = useState<Event[]>([]); // Type for events
+  const [error, setError] = useState<string>(''); // Type for error
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const data = await fetchEvents();
+        const data: Event[] = await fetchEvents(); // Ensure the API returns data in the correct format
         setEvents(data);
       } catch (err) {
         setError('Failed to load events');

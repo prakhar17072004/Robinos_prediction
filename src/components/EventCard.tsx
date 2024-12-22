@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface Team {
   name: string;
@@ -37,11 +38,11 @@ const EventCard: React.FC<EventCardProps> = ({
       <p className="text-sm text-gray-600 mb-4">Category: {category}</p>
       <div className="teams flex justify-between items-center mb-4">
         <div className="team">
-          <img src={teamA.img} alt={teamA.name} className="w-16 h-16" />
+          <Image src={teamA.img} alt={teamA.name} className="w-16 h-16" />
           <p>{teamA.name}</p>
         </div>
         <div className="team">
-          <img src={teamB.img} alt={teamB.name} className="w-16 h-16" />
+          <Image src={teamB.img} alt={teamB.name} className="w-16 h-16" />
           <p>{teamB.name}</p>
         </div>
       </div>

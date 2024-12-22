@@ -4,6 +4,7 @@ import Main from '@/components/main'
 import "../app/globals.css"
 import Navbar from '@/components/navbar';
 import EventList from '@/components/EventList';
+import Link from 'next/link';
 
 const Index: React.FC = () => {
   return <div className='h-[100vh] flex bg-gradient' >
@@ -12,7 +13,7 @@ const Index: React.FC = () => {
 <div className=''><Sidebar/></div>
 <div className=''>
     <Navbar/>
-    <Main/>
+    <Link href="/"><Main/></Link>
     <EventList />
     </div>
     

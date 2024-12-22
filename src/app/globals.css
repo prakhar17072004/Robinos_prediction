@@ -18,3 +18,11 @@
 .bg{
   background: linear-gradient(26deg, rgba(0, 255, 207, .1), rgba(93, 93, 255, .3) 35%, rgba(253, 133, 213, .7) 90%, rgba(253, 230, 52, .1));;
 }
+.event-card {
+  background-color: white;
+  transition: transform 0.3s;
+}
+
+.event-card:hover {
+  transform: scale(1.02);
+}

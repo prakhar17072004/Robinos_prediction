@@ -1,8 +1,6 @@
-export const fetchEvents = async (): Promise<any> => {
-    const response = await fetch('/public/data/events.json');
-    if (!response.ok) {
-      throw new Error('Failed to fetch events');
-    }
-    return response.json();
-  };
-  
+// src/services/api.ts
+
+export const fetchEvents = async (): Promise<any[]> => {
+  const events = (await import('../data/telos.json')).default;
+  return events;
+};

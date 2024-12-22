@@ -1,6 +1,7 @@
 [
+
   {
-    "eventCode": "Ipl 23/24 CSK v. RCB",
+    "eventCode": "Ipl 23/24 - CSK v. RCB",
     "betLink": {
       "linkURL": "",
       "linkText": ""
@@ -25,4 +26,5 @@
     "standardTokenAddress": "0x487697BA791CD4dEd7A9C6769915c55E71bECEA0",
     "tokenName": "RBN"
   }
+  
 ]

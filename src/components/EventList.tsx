@@ -37,7 +37,7 @@ const EventList: React.FC = () => {
         const data: Event[] = await fetchEvents(); // Ensure the API returns data in the correct format
         setEvents(data);
       } catch (err) {
-        setError('hello');
+        setError('failed to load the data');
       }
     };
     loadData();

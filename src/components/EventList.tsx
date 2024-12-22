@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchEvents } from '../Services/api'; // Make sure the file path is correct
+import { fetchEvents } from '../services/api'; // Make sure the file path is correct
 import EventCard from './EventCard';
 
 // Define types for event data
@@ -37,7 +37,7 @@ const EventList: React.FC = () => {
         const data: Event[] = await fetchEvents(); // Ensure the API returns data in the correct format
         setEvents(data);
       } catch (err) {
-        setError('Failed to load events');
+        setError('hello');
       }
     };
     loadData();

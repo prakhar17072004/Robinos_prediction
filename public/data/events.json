@@ -1,0 +1,28 @@
+[
+  {
+    "eventCode": "Ipl 23/24 CSK v. RCB",
+    "betLink": {
+      "linkURL": "",
+      "linkText": ""
+    },
+    "saleActive": true,
+    "category": "",
+    "condition": [
+      "Handicaps to be applied to respective teams",
+      "Event to cover only 90minutes plus additional time"
+    ],
+    "teamA": {
+      "name": "CSK",
+      "img": "",
+      "loser": false
+    },
+    "teamB": {
+      "name": "RCB",
+      "img": "",
+      "loser": false
+    },
+    "saleEnd": 1734946260,
+    "standardTokenAddress": "0x487697BA791CD4dEd7A9C6769915c55E71bECEA0",
+    "tokenName": "RBN"
+  }
+]

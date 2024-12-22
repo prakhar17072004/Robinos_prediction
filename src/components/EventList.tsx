@@ -30,6 +30,7 @@ interface Event {
 const EventList: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]); // Type for events
   const [error, setError] = useState<string>(''); // Type for error
+  const [activeTab, setActiveTab] = useState<string>("ongoing");
 
   useEffect(() => {
     const loadData = async () => {
@@ -49,7 +50,8 @@ const EventList: React.FC = () => {
   return (
     <div className="event-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {events.map(event => (
-        <EventCard key={event.eventCode} {...event} />
+      
+       <EventCard key={event.eventCode} {...event} />
       ))}
     </div>
   );

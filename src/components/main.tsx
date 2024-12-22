@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import EventCard from "./EventCard";
 
 const Main: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("ongoing");
@@ -6,6 +7,7 @@ const Main: React.FC = () => {
   const [isSportsDropdownOpen, setSportsDropdownOpen] = useState<boolean>(false);
   const [selectedToken, setSelectedToken] = useState<string>("All Tokens");
   const [selectedSport, setSelectedSport] = useState<string>("All Sports");
+  
 
   const handleTabClick = (tab: string): void => {
     setActiveTab(tab);
@@ -28,6 +30,7 @@ const Main: React.FC = () => {
     setSelectedSport(sport);
     setSportsDropdownOpen(false); // Close dropdown after selection
   };
+ 
 
   return (
     <div className=" ">
@@ -50,7 +53,7 @@ const Main: React.FC = () => {
               aria-controls="radix-:R5f6la:-content-ongoing"
               id="radix-:R5f6la:-trigger-ongoing"
               className={`inline-flex items-center justify-center p-[15px] font-medium transition-all ${
-                activeTab === "ongoing"
+                activeTab === "ongoing" 
                   ? "bg-blue-600 text-white  rounded-xl"
                   : "text-gray-300"
               }`}
@@ -89,6 +92,10 @@ const Main: React.FC = () => {
               Staked<span className="hidden lg:block">&nbsp;Events</span>
             </button>
           </div>
+          
+      
+        
+    
           <div className="w-full flex flex-col lg:flex-row gap-[10px]">
             <div className="relative w-full lg:w-[33%]">
               <svg
@@ -189,6 +196,8 @@ const Main: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      
     </div>
   );
 };

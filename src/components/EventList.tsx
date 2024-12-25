@@ -25,6 +25,7 @@ interface Event {
   saleEnd: number;
   standardTokenAddress: string;
   tokenName: string;
+  tokenAddress :string
 }
 
 const EventList: React.FC = () => {

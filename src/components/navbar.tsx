@@ -9,20 +9,23 @@ function Navbar() {
   const [network, setNetwork] = useState<string>("Telos");
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [installedWallets, setInstalledWallets] = useState({
+  const [installedWallets, setInstalledWallets] = useState<{
+    MetaMask: boolean;
+    Rainbow: boolean;
+    Coinbase: boolean;
+  }>({
     MetaMask: false,
     Rainbow: false,
     Coinbase: false,
   });
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [balance, setBalance] = useState<string | null>(null);
 
   const networks = ["Telos", "Taiko", "Mantle"];
   const wallets = [
     { name: "MetaMask", logo: metamaskLogo, installUrl: "https://metamask.io/" },
     { name: "Rainbow", logo: rainbow, installUrl: "https://rainbow.me/" },
     { name: "Coinbase", logo: coinbase, installUrl: "https://www.coinbase.com" },
-  ];
+  ] as const;
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.ethereum) {
@@ -45,13 +48,10 @@ function Navbar() {
         method: "eth_requestAccounts",
       });
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer =   await provider.getSigner();
+      const signer = await provider.getSigner();
       const address = await signer.getAddress();
-      const balanceInWei = await provider.getBalance(address);
-      const balanceInEth = ethers.formatEther(balanceInWei);
 
       setWalletAddress(address);
-      setBalance(balanceInEth);
       setIsModalOpen(false);
       console.log(`${walletName} connected:`, address);
     } catch (error) {
@@ -76,12 +76,6 @@ function Navbar() {
     <div>
       {/* Navbar */}
       <div className="flex mt-[10px] ml-[850px] items-center">
-        {walletAddress && balance ? (
-          <div className="mr-4 text-white font-medium">
-            <p>Address: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
-            <p>Balance: {balance} ETH</p>
-          </div>
-        ) : null}
         <div className="rounded-[10px] font-medium text-14 relative gradient hidden md:flex mr-[10px]">
           <div className="flex items-center h-[50px] p-[2px] relative">
             <button
@@ -107,14 +101,20 @@ function Navbar() {
             )}
           </div>
         </div>
-        <div
-          className="rounded-[10px] font-medium text-[16px] px-[28px] relative bg-blue-600 hover:bg-blue-400 transition cursor-pointer"
-          onClick={toggleModal}
-        >
-          <div className="flex items-center justify-center h-[50px]">
-            <span>Connect wallet</span>
+        {walletAddress ? (
+          <div className="rounded-[10px] font-medium text-[16px] px-[20px] py-[10px] bg-slate-800 text-white">
+            {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </div>
-        </div>
+        ) : (
+          <div
+            className="rounded-[10px] font-medium text-[16px] px-[28px] relative bg-blue-600 hover:bg-blue-400 transition cursor-pointer"
+            onClick={toggleModal}
+          >
+            <div className="flex items-center justify-center h-[50px]">
+              <span>Connect wallet</span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Modal */}
@@ -144,7 +144,7 @@ function Navbar() {
                   />
                   <div>
                     <span className="text-sm block">{wallet.name}</span>
-                    {installedWallets? (
+                    {installedWallets[wallet.name as keyof typeof installedWallets] ? (
                       <span className="text-green-400 text-xs">Installed</span>
                     ) : (
                       <span className="text-blue-400 text-xs underline">

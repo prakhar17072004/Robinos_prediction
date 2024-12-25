@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ethers } from "ethers"; // Import ethers.js
 import logo from "../assets/ipl.svg";
@@ -43,6 +43,26 @@ const EventCard: React.FC<EventCardProps> = ({
 
   const saleEndDate = new Date(saleEnd * 1000).toLocaleString();
 
+  // Check wallet connection status on component load
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      if (typeof window.ethereum !== "undefined") {
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_accounts",
+          });
+          if (accounts.length > 0) {
+            setWalletAddress(accounts[0]);
+          }
+        } catch (error) {
+          console.error("Error checking wallet connection:", error);
+        }
+      }
+    };
+
+    checkWalletConnection();
+  }, []);
+
   const openModal = (e: React.MouseEvent) => {
     e.stopPropagation();
     setModalOpen(true);
@@ -68,7 +88,9 @@ const EventCard: React.FC<EventCardProps> = ({
       return;
     }
     try {
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       setWalletAddress(accounts[0]);
     } catch (error) {
       console.error("Wallet connection failed:", error);
@@ -96,7 +118,6 @@ const EventCard: React.FC<EventCardProps> = ({
           // Minimal ABI for transfer and approve
           "function approve(address spender, uint256 amount) public returns (bool)",
         ],
-        
       );
 
       const amountInWei = ethers.parseUnits(betAmount, 18); // Convert to WEI
@@ -143,9 +164,19 @@ const EventCard: React.FC<EventCardProps> = ({
       </div>
       <p className="text-sm text-gray-600">Sale Ends: {saleEndDate}</p>
       <p className="text-sm text-gray-600">Token Name: {tokenName}</p>
-      <button onClick={openModal} className="text-blue-500 underline">
-        {betLink.linkText || "BetLink"}
-      </button>
+      <p className="text-sm text-gray-600">
+        Wallet: {walletAddress ? walletAddress : "Not Connected"}
+      </p>
+      {!walletAddress && (
+        <button onClick={connectWallet} className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+          Connect Wallet
+        </button>
+      )}
+      {walletAddress && (
+        <button onClick={openModal} className="text-blue-500 underline">
+          {betLink.linkText || "BetLink"}
+        </button>
+      )}
 
       {/* Modal */}
       {isModalOpen && (

@@ -1,12 +1,12 @@
 [
 
   {
-    "eventCode": "IPL 23/24 - CSK v. RCB",
+    "eventCode": "IPL 25/26 - CSK v. RCB",
     "betLink": {
       "linkURL": "",
       "linkText": ""
     },
-    "saleActive": true,
+    "saleActive": false,
     "category": "",
     "condition": [
       "Handicaps to be applied to respective teams",
@@ -22,8 +22,8 @@
       "img": "",
       "loser": false
     },
-    "saleEnd": 1734946260,
-    "standardTokenAddress": "0x487697BA791CD4dEd7A9C6769915c55E71bECEA0",
+    "saleEnd": 1735222080,
+    "standardTokenAddress": "0x1Db5455e3Ae3613B3FAA6B5DcC87d295d62cEEe2",
     "tokenName": "RBN"
   }
   

@@ -4,7 +4,6 @@ import { ethers } from "ethers"; // Import ethers.js
 import logo from "../assets/ipl.svg";
 import RCB from "../assets/rcb_log.png";
 import CSK from "../assets/csk_logo.svg";
-import ABI from "../data/abi.json"
 
 interface Team {
   name: string;
@@ -23,7 +22,6 @@ interface EventCardProps {
   saleEnd: number;
   tokenName: string;
   tokenAddress: string; // Add token address
-
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -44,6 +42,7 @@ const EventCard: React.FC<EventCardProps> = ({
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   const saleEndDate = new Date(saleEnd * 1000).toLocaleString();
+  
 
   // Check wallet connection status on component load
   useEffect(() => {
@@ -114,16 +113,29 @@ const EventCard: React.FC<EventCardProps> = ({
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = provider.getSigner();
 
+      const contractAddress = "0xF1caaa7570EEbB4E6aefE9C2Db3E918f7a65192d";
+if (!contractAddress) {
+  console.error("Contract address is null or undefined!");
+}
+      
+
+const tokenAddress = "0x1Db5455e3Ae3613B3FAA6B5DcC87d295d62cEEe2";
+if (!tokenAddress) {
+  console.error("token address is null or undefined!");
+}
+      
       const tokenContract = new ethers.Contract(
-        tokenAddress,
-         // Token address passed as a prop
-        ABI,
+        tokenAddress, // Token address passed as a prop
+        [
+          // Minimal ABI for transfer and approve
+          "function approve(address spender, uint256 amount) public returns (bool)",
+        ],
       );
 
       const amountInWei = ethers.parseUnits(betAmount, 18); // Convert to WEI
 
       // Approve the betting contract to use the amount
-      const tx = await tokenContract.approve(eventCode, amountInWei); // Use eventCode as the spender
+      const tx = await tokenContract.approve(contractAddress, amountInWei); // Use eventCode as the spender
       await tx.wait();
 
       alert(`Bet placed on ${selectedTeam.name} with amount ${betAmount}!`);

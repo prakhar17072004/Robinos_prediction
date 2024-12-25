@@ -4,6 +4,7 @@ import { ethers } from "ethers"; // Import ethers.js
 import logo from "../assets/ipl.svg";
 import RCB from "../assets/rcb_log.png";
 import CSK from "../assets/csk_logo.svg";
+import ABI from "../data/abi.json"
 
 interface Team {
   name: string;
@@ -22,6 +23,7 @@ interface EventCardProps {
   saleEnd: number;
   tokenName: string;
   tokenAddress: string; // Add token address
+  contractAddress :"0xD7ACd2a9FD159E69Bb102A1ca21C9a3e3A5F771B"
 }
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -113,11 +115,9 @@ const EventCard: React.FC<EventCardProps> = ({
       const signer = provider.getSigner();
 
       const tokenContract = new ethers.Contract(
-        tokenAddress, // Token address passed as a prop
-        [
-          // Minimal ABI for transfer and approve
-          "function approve(address spender, uint256 amount) public returns (bool)",
-        ],
+        tokenAddress,
+         // Token address passed as a prop
+        ABI,
       );
 
       const amountInWei = ethers.parseUnits(betAmount, 18); // Convert to WEI

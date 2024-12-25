@@ -3,95 +3,59 @@ import metamaskLogo from "../assets/metamask.png";
 import coinbase from "../assets/coinbase.png";
 import rainbow from "../assets/rainbow.png";
 import Image from "next/image";
+import { ethers } from "ethers";
 
 function Navbar() {
   const [network, setNetwork] = useState<string>("Telos");
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [installedWallets, setInstalledWallets] = useState<{
-    [key: string]: boolean;
-  }>({
+  const [installedWallets, setInstalledWallets] = useState({
     MetaMask: false,
     Rainbow: false,
     Coinbase: false,
-    WalletConnect: false,
   });
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [balance, setBalance] = useState<string | null>(null);
 
   const networks = ["Telos", "Taiko", "Mantle"];
   const wallets = [
     { name: "MetaMask", logo: metamaskLogo, installUrl: "https://metamask.io/" },
     { name: "Rainbow", logo: rainbow, installUrl: "https://rainbow.me/" },
     { name: "Coinbase", logo: coinbase, installUrl: "https://www.coinbase.com" },
-    // { name: "WalletConnect", logo: metamaskLogo, installUrl: "https://walletconnect.com/" },
   ];
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const detectWallets = () => {
-        setInstalledWallets({
-          MetaMask: !!window.ethereum && !!window.ethereum.isMetaMask, // Detect MetaMask
-          Rainbow: !!window.ethereum && !!window.ethereum.isRainbow, // Detect Rainbow
-          Coinbase: !!window.ethereum && !!window.ethereum.isCoinbaseWallet, // Detect Coinbase
-        });
-      };
-
-      detectWallets();
+    if (typeof window !== "undefined" && window.ethereum) {
+      setInstalledWallets({
+        MetaMask: !!window.ethereum.isMetaMask,
+        Rainbow: !!window.ethereum.isRainbow,
+        Coinbase: !!window.ethereum.isCoinbaseWallet,
+      });
     }
   }, []);
 
-  const handleWalletSelection = (walletName: string): void => {
-    const wallet = wallets.find((w) => w.name === walletName);
+  const handleWalletSelection = async (walletName: string): Promise<void> => {
+    if (!window.ethereum) {
+      alert("No Ethereum provider found. Please install a wallet.");
+      return;
+    }
 
-    if (!wallet) return;
+    try {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer =   await provider.getSigner();
+      const address = await signer.getAddress();
+      const balanceInWei = await provider.getBalance(address);
+      const balanceInEth = ethers.formatEther(balanceInWei);
 
-    if (installedWallets[walletName]) {
-      switch (walletName) {
-        case "MetaMask":
-          if (window.ethereum && window.ethereum.isMetaMask) {
-            window.ethereum
-              ?.request({ method: "eth_requestAccounts" })
-              .then((accounts: string[]) => {
-                console.log("Connected to MetaMask:", accounts[0]);
-              })
-              .catch((error: any) => {
-                console.error("Error connecting to MetaMask:", error);
-              });
-          }
-          break;
-
-        case "Rainbow":
-          if (window.ethereum && window.ethereum.isRainbow) {
-            window.ethereum
-              .request({ method: "eth_requestAccounts" })
-              .then((accounts: string[]) => {
-                console.log("Connected to Rainbow:", accounts[0]);
-              })
-              .catch((error: any) => {
-                console.error("Error connecting to Rainbow:", error);
-              });
-          }
-          break;
-
-        case "Coinbase":
-          if (window.ethereum && window.ethereum.isCoinbaseWallet) {
-            window.ethereum
-              .request({ method: "eth_requestAccounts" })
-              .then((accounts: string[]) => {
-                console.log("Connected to Coinbase Wallet:", accounts[0]);
-              })
-              .catch((error: any) => {
-                console.error("Error connecting to Coinbase Wallet:", error);
-              });
-          }
-          break;
-
-        default:
-          console.error("Wallet connection logic not implemented.");
-          break;
-      }
-    } else {
-      console.log(`${walletName} is not installed. Redirecting to installation.`);
-      window.open(wallet.installUrl, "_blank");
+      setWalletAddress(address);
+      setBalance(balanceInEth);
+      setIsModalOpen(false);
+      console.log(`${walletName} connected:`, address);
+    } catch (error) {
+      console.error("Error connecting to wallet:", error);
     }
   };
 
@@ -111,7 +75,13 @@ function Navbar() {
   return (
     <div>
       {/* Navbar */}
-      <div className="flex mt-[10px] ml-[850px]">
+      <div className="flex mt-[10px] ml-[850px] items-center">
+        {walletAddress && balance ? (
+          <div className="mr-4 text-white font-medium">
+            <p>Address: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
+            <p>Balance: {balance} ETH</p>
+          </div>
+        ) : null}
         <div className="rounded-[10px] font-medium text-14 relative gradient hidden md:flex mr-[10px]">
           <div className="flex items-center h-[50px] p-[2px] relative">
             <button
@@ -174,7 +144,7 @@ function Navbar() {
                   />
                   <div>
                     <span className="text-sm block">{wallet.name}</span>
-                    {installedWallets[wallet.name] ? (
+                    {installedWallets? (
                       <span className="text-green-400 text-xs">Installed</span>
                     ) : (
                       <span className="text-blue-400 text-xs underline">

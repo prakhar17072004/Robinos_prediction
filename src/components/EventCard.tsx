@@ -82,7 +82,7 @@ const EventCard: React.FC<EventCardProps> = ({
         target="_blank"
         rel="noopener noreferrer"
       >
-        {betLink.linkText || "View Details"}
+        {betLink.linkText || "Being Part Of Bet"}
       </a>
     </div>
   );

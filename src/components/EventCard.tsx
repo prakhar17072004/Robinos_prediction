@@ -119,10 +119,10 @@ if (!contractAddress) {
 }
       
 
-// const tokenAddress = "0x1Db5455e3Ae3613B3FAA6B5DcC87d295d62cEEe2";
-// if (!tokenAddress) {
-//   console.error("token address is null or undefined!");
-// }
+const tokenAddress = "0x1Db5455e3Ae3613B3FAA6B5DcC87d295d62cEEe2";
+if (!tokenAddress) {
+  console.error("token address is null or undefined!");
+}
       
       const tokenContract = new ethers.Contract(
         tokenAddress, // Token address passed as a prop

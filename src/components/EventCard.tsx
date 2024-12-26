@@ -111,7 +111,7 @@ const EventCard: React.FC<EventCardProps> = ({
 
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = provider.getSigner();
+      const signer =  await provider.getSigner();
 
       const contractAddress = "0xF1caaa7570EEbB4E6aefE9C2Db3E918f7a65192d";
 if (!contractAddress) {
@@ -124,19 +124,23 @@ if (!tokenAddress) {
   console.error("token address is null or undefined!");
 }
       
-      const tokenContract = new ethers.Contract(
-        tokenAddress, // Token address passed as a prop
-        [
-          // Minimal ABI for transfer and approve
-          "function approve(address spender, uint256 amount) public returns (bool)",
-        ],
-      );
+      // Initialize token contract with signer
+    const tokenContract = new ethers.Contract(
+      tokenAddress,
+      [
+        // Minimal ABI for approve
+        "function approve(address spender, uint256 amount) public returns (bool)",
+      ],
+      signer // Connect signer here
+    );
 
       const amountInWei = ethers.parseUnits(betAmount, 18); // Convert to WEI
 
       // Approve the betting contract to use the amount
       const tx = await tokenContract.approve(contractAddress, amountInWei); // Use eventCode as the spender
+      console.log("Transaction sent:", tx);
       await tx.wait();
+      console.log("Transaction confirmed:", tx);
 
       alert(`Bet placed on ${selectedTeam.name} with amount ${betAmount}!`);
       closeModal();

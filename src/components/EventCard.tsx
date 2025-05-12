@@ -154,7 +154,7 @@ if (!tokenAddress) {
     <div className="event-card border p-4 shadow-md bg mt-[20px] ml-[105px] rounded-xl ">
       <div className="flex justify-between">
         <div>
-          <div className="text-lg font-bold mb-2">{eventCode.split("-")[0]}</div>
+          <div className="text-lg font-semibold h mb-2">{eventCode.split("-")[0]}</div>
           <p className="text-[18px] leading-tight font-medium line-clamp-2">
             {eventCode.split("-")[1]}
           </p>

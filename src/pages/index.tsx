@@ -11,7 +11,7 @@ const Index: React.FC = () => {
     
 
 <div className=''><Sidebar/></div>
-<div className=''>
+<div className='bg-slate-400'>
     <Navbar/>
     <Link href="/"><Main/></Link>
     <EventList />
